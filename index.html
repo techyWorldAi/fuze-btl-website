@@ -37,6 +37,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);overflow-x:h
 @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes dash{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes ken-burns{0%{transform:scale(1.08) translate(0%,0%)}33%{transform:scale(1.12) translate(-1.5%,-1%)}66%{transform:scale(1.1) translate(1%,-0.5%)}100%{transform:scale(1.08) translate(0%,0%)}}
+@keyframes modal-in{from{opacity:0;transform:translateY(32px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes overlay-in{from{opacity:0}to{opacity:1}}
 
 .container{max-width:1200px;margin:0 auto;padding:0 28px}
 .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px}
@@ -60,7 +63,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);overflow-x:h
 .img-placeholder .upload-hint{font-size:11px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
 
 /* NAVBAR */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0;transition:all 0.3s}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0;background:#fff;box-shadow:0 1px 0 var(--border);transition:all 0.3s}
 .navbar.scrolled{background:#fff;box-shadow:0 1px 0 var(--border)}
 .navbar-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
 .logo{display:flex;align-items:center;gap:0;text-decoration:none;flex-shrink:0}
@@ -73,9 +76,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);overflow-x:h
 
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;background:var(--dark);position:relative;overflow:hidden;padding:100px 0 80px}
-.hero-bg-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
-.hero-accent{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(232,113,26,0.12) 0%,transparent 70%);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:center;position:relative;z-index:1}
+.hero-bg-img{position:absolute;inset:0;z-index:0}
+.hero-bg-img img{width:100%;height:100%;object-fit:cover;object-position:center;animation:ken-burns 20s ease-in-out infinite alternate}
+.hero-bg-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,10,10,0.82) 0%,rgba(10,10,10,0.55) 55%,rgba(10,10,10,0.3) 100%)}
+.hero-bg-pattern{position:absolute;inset:0;z-index:2;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.hero-accent{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(232,113,26,0.1) 0%,transparent 70%);pointer-events:none;z-index:2}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:center;position:relative;z-index:3}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(232,113,26,0.12);border:1px solid rgba(232,113,26,0.3);border-radius:2px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--orange-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
 .hero-tag .dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s infinite}
 .hero-h1{font-family:var(--display);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:900;line-height:0.98;color:#fff;letter-spacing:-1px;margin-bottom:28px;text-transform:uppercase}
@@ -261,6 +267,25 @@ textarea.form-input{resize:vertical;min-height:100px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:900px){.contact-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
 
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(10,10,10,0.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;animation:overlay-in 0.25s ease forwards}
+.modal-box{background:#fff;border-radius:8px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;animation:modal-in 0.32s cubic-bezier(0.22,1,0.36,1) forwards;box-shadow:0 40px 100px rgba(0,0,0,0.35)}
+.modal-header{padding:32px 36px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.modal-header-text{}
+.modal-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.modal-eyebrow::before{content:'';width:18px;height:2px;background:var(--orange);display:inline-block}
+.modal-title{font-family:var(--display);font-size:28px;font-weight:900;color:var(--dark);line-height:1.05;text-transform:uppercase}
+.modal-close{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--mid);transition:all 0.2s;font-size:18px;line-height:1}
+.modal-close:hover{background:var(--dark);color:#fff;border-color:var(--dark)}
+.modal-body{padding:24px 36px 36px}
+.modal-body .form-field{margin-bottom:14px}
+.modal-body .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-success{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 36px;text-align:center;gap:16px}
+.modal-success-icon{width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px}
+.modal-success h3{font-family:var(--display);font-size:26px;font-weight:900;text-transform:uppercase;color:var(--dark)}
+.modal-success p{font-size:14px;color:var(--mid);line-height:1.7;max-width:300px}
+@media(max-width:560px){.modal-header{padding:24px 20px 0}.modal-body{padding:20px 20px 28px}.modal-body .form-row{grid-template-columns:1fr}.modal-title{font-size:22px}}
+
 /* FOOTER */
 .footer{padding:72px 0 32px;background:var(--dark);border-top:1px solid rgba(255,255,255,0.06)}
 .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
@@ -367,6 +392,59 @@ const ImgPlaceholder = ({height=240, label="Add Image", hint="Click to upload", 
   </div>
 );
 
+/* ─── CONTACT MODAL ─── */
+function ContactModal({open, onClose, title="Let's Work Together"}){
+  const [form,setForm]=useState({name:'',company:'',email:'',phone:'',service:'',message:''});
+  const [sent,setSent]=useState(false);
+  const upd=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
+  const submit=e=>{e.preventDefault();setSent(true)};
+  if(!open)return null;
+  return(
+    <div className="modal-overlay" onClick={e=>{if(e.target===e.currentTarget)onClose()}}>
+      <div className="modal-box">
+        <div className="modal-header">
+          <div className="modal-header-text">
+            <div className="modal-eyebrow">Get In Touch</div>
+            <div className="modal-title">{title}</div>
+          </div>
+          <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+        </div>
+        <div className="modal-body">
+          {sent?(
+            <div className="modal-success">
+              <div className="modal-success-icon">✓</div>
+              <h3>Message Sent!</h3>
+              <p>Our team will review your brief and get back to you within 4 business hours.</p>
+              <button onClick={()=>{setSent(false);onClose()}} className="btn-primary" style={{marginTop:'8px'}}>Done <I.Check/></button>
+            </div>
+          ):(
+            <form onSubmit={submit}>
+              <div className="modal-body" style={{padding:0}}>
+                <div className="form-row" style={{marginBottom:0}}>
+                  <div className="form-field"><label className="form-label">Full Name</label><input className="form-input" placeholder="Your name" value={form.name} onChange={upd('name')} required/></div>
+                  <div className="form-field"><label className="form-label">Company</label><input className="form-input" placeholder="Company name" value={form.company} onChange={upd('company')}/></div>
+                </div>
+                <div className="form-row" style={{marginBottom:0}}>
+                  <div className="form-field"><label className="form-label">Email</label><input type="email" className="form-input" placeholder="you@company.com" value={form.email} onChange={upd('email')} required/></div>
+                  <div className="form-field"><label className="form-label">Phone</label><input className="form-input" placeholder="+254 7xx xxx xxx" value={form.phone} onChange={upd('phone')}/></div>
+                </div>
+                <div className="form-field"><label className="form-label">Service</label>
+                  <select className="form-input" value={form.service} onChange={upd('service')}>
+                    <option value="" disabled>Select a service</option>
+                    {['Brand Activations','Field Marketing','Product Launches','Retail Activations','OOH + BTL Integration','Corporate Events','Campaign Analytics'].map(s=><option key={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div className="form-field"><label className="form-label">Message / Brief</label><textarea className="form-input" placeholder="Tell us about your campaign objectives, timeline, and target audience..." rows="3" value={form.message} onChange={upd('message')} required/></div>
+                <button type="submit" className="btn-primary" style={{width:'100%',justifyContent:'center',padding:'15px',fontSize:'14px',marginTop:'4px'}}>Send Message <I.Arrow/></button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── SCROLL COUNTER ─── */
 function useInView(threshold=0.3){
   const ref=useRef(null);
@@ -397,7 +475,7 @@ function useCount(target,dur=1800,run=false){
 }
 
 /* ─── NAVBAR ─── */
-function Navbar(){
+function Navbar({openModal}){
   const [scrolled,setScrolled]=useState(false);
   useEffect(()=>{
     const h=()=>setScrolled(window.scrollY>60);
@@ -415,7 +493,7 @@ function Navbar(){
           <ul className="nav-links">
             {links.map(([l,h])=><li key={l}><a href={h}>{l}</a></li>)}
           </ul>
-          <a href="#contact" className="btn-primary" style={{fontSize:'12px',padding:'10px 20px'}}>Book Strategy Session</a>
+          <button onClick={()=>openModal('Book A Strategy Session')} className="btn-primary" style={{fontSize:'12px',padding:'10px 20px'}}>Book Strategy Session</button>
           <button className="nav-toggle" aria-label="Menu"><I.Menu/></button>
         </div>
       </div>
@@ -424,10 +502,14 @@ function Navbar(){
 }
 
 /* ─── HERO ─── */
-function Hero(){
+function Hero({openModal}){
   const bars=[55,70,45,85,65,95,72,100];
   return(
     <section className="hero" id="home">
+      <div className="hero-bg-img">
+        <img src="images/Kulture-29.jpg" alt="" aria-hidden="true"/>
+      </div>
+      <div className="hero-bg-overlay"/>
       <div className="hero-bg-pattern"/>
       <div className="hero-accent"/>
       <div className="container">
@@ -439,7 +521,7 @@ function Hero(){
             </h1>
             <p className="hero-sub">We combine data intelligence, real-time analytics, and precision-led execution to create brand activations that drive measurable, attributable impact at scale.</p>
             <div className="hero-ctas">
-              <a href="#contact" className="btn-primary">Book Strategy Session <I.Arrow/></a>
+              <button onClick={()=>openModal('Book A Strategy Session')} className="btn-primary">Book Strategy Session <I.Arrow/></button>
               <a href="#cases" className="btn-outline-white">View Case Studies</a>
             </div>
             <div className="hero-stats">
@@ -453,7 +535,6 @@ function Hero(){
           </div>
           <div className="hero-img-area">
             <div className="hero-main-img">
-              <ImgPlaceholder height={340} label="Hero Campaign Image" hint="High-energy activation or event photo" spec="1200×900px · JPG/PNG"/>
             </div>
             <div className="hero-float-card hero-float-card-1">
               <div className="fc-label">Live Campaign ROI</div>
@@ -507,10 +588,10 @@ function WhyFuze(){
         <div className="about-grid">
           <div className="about-img-stack">
             <div className="about-img-main">
-              <ImgPlaceholder height="100%" label="Team or Activation Photo" hint="e.g. field team or event setup shot" spec="900×700px · JPG/PNG"/>
+              <img src="images/Kulture-29.jpg" alt="Brand activation event" style={{height:'100%',width:'100%',objectFit:'cover',borderRadius:'8px'}}/>
             </div>
             <div className="about-img-accent" style={{height:'220px',width:'220px'}}>
-              <ImgPlaceholder height="100%" label="Secondary Image" hint="Close-up or detail shot" spec="400×400px · JPG/PNG"/>
+              <img src="images/Hero.png" alt="Brand activation event" style={{height:'100%',width:'100%',objectFit:'cover',borderRadius:'8px'}}/>
             </div>
             <div className="about-orange-bar"/>
           </div>
@@ -635,6 +716,7 @@ function Metrics(){
   );
 }
 
+
 /* ─── CASE STUDIES ─── */
 function CaseStudies(){
   const cases=[
@@ -654,7 +736,7 @@ function CaseStudies(){
       tag:'Sponsorship Experience',client:'KCB Safari Rally',
       objective:'Transform KCB\'s WRC Safari Rally presence into a dual-experience ecosystem: mass market engagement via the KCB Den and VIP hospitality through KCB Platinum.',
       results:[['5,000+','Mass Engagements'],['300','VIP Guests'],['Full-Spectrum','Brand Presence']],
-      img:'KCB Safari Rally KCB Den activation photo'
+      img:'./images/KCB-Puts-KShs-150M-into-2023-WRC-Safari-Rally-scaled.jpg'
     },
     {
       tag:'Client Engagement',client:'Nellions',
@@ -691,7 +773,7 @@ function CaseStudies(){
             <div key={c.client} className="case-card" style={c.placeholder?{border:'2px dashed var(--border)',opacity:0.7}:{}}>
               <div className="case-img">
                 <div className="case-tag">{c.tag}</div>
-                <ImgPlaceholder height={200} label={c.img} hint={c.placeholder?"Your campaign photo":"Campaign or event photo"} spec="800×450px · JPG/PNG"/>
+                <img src={c.img} alt={c.img} height="fit" width="100%" />
               </div>
               <div className="case-body">
                 <div className="case-client">{c.client}</div>
@@ -834,7 +916,7 @@ function AboutFuze(){
 }
 
 /* ─── CTA ─── */
-function CTA(){
+function CTA({openModal}){
   return(
     <section className="cta-section">
       <div className="cta-bg"/>
@@ -846,7 +928,7 @@ function CTA(){
             <p className="cta-sub">Let's build measurable growth through data-driven brand experiences engineered for your market.</p>
           </div>
           <div className="cta-actions">
-            <a href="#contact" className="btn-primary" style={{justifyContent:'center'}}>Schedule Consultation <I.Arrow/></a>
+            <button onClick={()=>openModal('Schedule A Consultation')} className="btn-primary" style={{justifyContent:'center'}}>Schedule Consultation <I.Arrow/></button>
             <a href="tel:+254700000000" className="btn-outline-white" style={{justifyContent:'center'}}>Speak To Our Team</a>
           </div>
         </div>
@@ -856,11 +938,7 @@ function CTA(){
 }
 
 /* ─── CONTACT ─── */
-function Contact(){
-  const [form,setForm]=useState({name:'',company:'',email:'',phone:'',service:'',budget:'',message:''});
-  const [sent,setSent]=useState(false);
-  const upd=k=>e=>setForm({...form,[k]:e.target.value});
-  const submit=e=>{e.preventDefault();setSent(true)};
+function Contact({openModal}){
   return(
     <section className="contact-section" id="contact">
       <div className="container">
@@ -889,42 +967,23 @@ function Contact(){
               <ImgPlaceholder height={160} label="Office / Team Photo" hint="Optional: adds a human touch to contact section" spec="700×320px · JPG/PNG"/>
             </div>
           </div>
-          <div>
-            {sent?(
-              <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%',textAlign:'center',gap:'16px',padding:'48px 0'}}>
-                <div style={{width:'64px',height:'64px',borderRadius:'4px',background:'var(--orange)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}><I.Check/></div>
-                <h3 style={{fontFamily:'var(--display)',fontSize:'28px',fontWeight:900,textTransform:'uppercase'}}>Proposal Request Sent</h3>
-                <p style={{color:'var(--mid)',fontSize:'14px',lineHeight:1.7,maxWidth:'320px'}}>Our team will review your brief and get back to you within 4 business hours with a tailored strategy proposal.</p>
-                <button onClick={()=>setSent(false)} className="btn-outline">Send Another</button>
+          <div style={{display:'flex',flexDirection:'column',justifyContent:'center',gap:'28px'}}>
+            <div style={{padding:'40px',background:'var(--bg2)',borderRadius:'8px',border:'1px solid var(--border)',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'20px'}}>
+              <div style={{width:'60px',height:'60px',borderRadius:'50%',background:'rgba(232,113,26,0.1)',border:'2px solid rgba(232,113,26,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--orange)'}}><I.Mail/></div>
+              <div>
+                <h4 style={{fontFamily:'var(--display)',fontSize:'22px',fontWeight:900,textTransform:'uppercase',marginBottom:'8px'}}>Send Us A Brief</h4>
+                <p style={{color:'var(--mid)',fontSize:'14px',lineHeight:1.7,maxWidth:'280px'}}>Fill out a quick form and our strategy team will respond with a tailored proposal within 4 hours.</p>
               </div>
-            ):(
-              <form onSubmit={submit}>
-                <div className="form-row">
-                  <div className="form-field"><label className="form-label">Full Name</label><input className="form-input" placeholder="Your name" value={form.name} onChange={upd('name')} required/></div>
-                  <div className="form-field"><label className="form-label">Company</label><input className="form-input" placeholder="Company name" value={form.company} onChange={upd('company')} required/></div>
-                </div>
-                <div className="form-row">
-                  <div className="form-field"><label className="form-label">Email</label><input type="email" className="form-input" placeholder="you@company.com" value={form.email} onChange={upd('email')} required/></div>
-                  <div className="form-field"><label className="form-label">Phone</label><input className="form-input" placeholder="+254 7xx xxx xxx" value={form.phone} onChange={upd('phone')}/></div>
-                </div>
-                <div className="form-row">
-                  <div className="form-field"><label className="form-label">Service</label>
-                    <select className="form-input" value={form.service} onChange={upd('service')} required>
-                      <option value="" disabled>Select a service</option>
-                      {['Brand Activations','Field Marketing','Product Launches','Retail Activations','OOH + BTL Integration','Corporate Events','Fabrication & Build','Campaign Analytics'].map(s=><option key={s}>{s}</option>)}
-                    </select>
-                  </div>
-                  <div className="form-field"><label className="form-label">Campaign Budget</label>
-                    <select className="form-input" value={form.budget} onChange={upd('budget')}>
-                      <option value="" disabled>Select range</option>
-                      {['Under KES 500K','KES 500K – 2M','KES 2M – 5M','KES 5M – 15M','Over KES 15M'].map(b=><option key={b}>{b}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div className="form-field"><label className="form-label">Campaign Brief</label><textarea className="form-input" placeholder="Tell us about your brand, campaign objectives, and target audience..." rows="4" value={form.message} onChange={upd('message')} required/></div>
-                <button type="submit" className="btn-primary" style={{width:'100%',justifyContent:'center',padding:'16px',fontSize:'15px'}}>Request Proposal <I.Arrow/></button>
-              </form>
-            )}
+              <button onClick={()=>openModal('Request A Proposal')} className="btn-primary" style={{justifyContent:'center',width:'100%',maxWidth:'260px'}}>Request Proposal <I.Arrow/></button>
+            </div>
+            <div style={{padding:'32px',background:'var(--dark)',borderRadius:'8px',textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',gap:'16px'}}>
+              <div style={{width:'52px',height:'52px',borderRadius:'50%',background:'rgba(255,255,255,0.08)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}><I.Phone/></div>
+              <div>
+                <h4 style={{fontFamily:'var(--display)',fontSize:'18px',fontWeight:900,textTransform:'uppercase',color:'#fff',marginBottom:'6px'}}>Prefer To Talk?</h4>
+                <p style={{color:'rgba(255,255,255,0.45)',fontSize:'13px',lineHeight:1.6}}>Call us directly — we're available Mon–Fri, 8am–6pm EAT</p>
+              </div>
+              <a href="tel:+254700000000" className="btn-outline-white" style={{justifyContent:'center',width:'100%',maxWidth:'220px'}}>Call Now <I.Arrow/></a>
+            </div>
           </div>
         </div>
       </div>
@@ -962,7 +1021,7 @@ function Footer(){
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2025 FUZE BTL Division — A Firmbridge Advertising Company. All rights reserved.</p>
+          <p>{new Date().getFullYear()} FUZE BTL Division — A Firmbridge Advertising Company. All rights reserved.</p>
           <div className="footer-bottom-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
@@ -975,11 +1034,14 @@ function Footer(){
 
 /* ─── APP ─── */
 function App(){
+  const [modal,setModal]=useState({open:false,title:'Let\'s Work Together'});
+  const openModal=(title)=>setModal({open:true,title:title||'Let\'s Work Together'});
+  const closeModal=()=>setModal(m=>({...m,open:false}));
   return(
     <>
-      <Navbar/>
+      <Navbar openModal={openModal}/>
       <main>
-        <Hero/>
+        <Hero openModal={openModal}/>
         <TrustBar/>
         <WhyFuze/>
         <Services/>
@@ -989,10 +1051,11 @@ function App(){
         <Industries/>
         <Testimonials/>
         <AboutFuze/>
-        <CTA/>
-        <Contact/>
+        <CTA openModal={openModal}/>
+        <Contact openModal={openModal}/>
       </main>
       <Footer/>
+      <ContactModal open={modal.open} onClose={closeModal} title={modal.title}/>
       <a href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer" className="wa-float" aria-label="WhatsApp">
         <svg width="26"height="26"viewBox="0 0 24 24"fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       </a>
