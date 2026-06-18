@@ -1,6 +1,6 @@
 import React from 'react'
 import { I, FuzeLogo } from './Icons'
-import FuzeLogoPng from '../../images/Fuze Logo png.png'
+import FuzeLogoPng from '/images/Fuze Logo png.png'
 
 function AboutFuze() {
   const pillars = [

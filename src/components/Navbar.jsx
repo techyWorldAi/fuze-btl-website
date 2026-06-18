@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { I } from './Icons'
-import FuzeLogoPng from '../../images/Fuze Logo png.png'
+import FuzeLogoPng from '/images/Fuze Logo png.png'
 
 function Navbar({ openModal }) {
   const [scrolled, setScrolled] = useState(false)

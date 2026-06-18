@@ -15,7 +15,7 @@ function WhyFuze() {
       <div className="container">
         <div className="about-grid">
           <div className="about-img-stack">
-            <div className="about-img-main"><img src="images/Kulture-29.jpg" alt="Brand activation event" style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '8px' }} /></div>
+            <div className="about-img-main"><img src="images/MNO_7112.JPG" alt="Brand activation event" style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '8px' }} /></div>
             <div className="about-img-accent" style={{ height: '220px', width: '220px' }}><img src="images/Hero.png" alt="Brand activation" style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: '8px' }} /></div>
             <div className="about-orange-bar" />
           </div>
